@@ -1,56 +1,22 @@
 ﻿using System.IO;
 using System.Text;
-using NUnit.Framework;
 
 namespace NGTP.Specs
 {
-    [TestFixture]
     public class Given_GtpClient
     {
-        private GtpClient _gtpClient;
         private MemoryStream _outstream;
         private MemoryStream _instream;
         private readonly Encoding _encoding = Encoding.UTF8;
 
-        [SetUp]
-        public void SetUp()
+        public GtpClient CreateGtpClient()
         {
             _outstream = new MemoryStream();
             _instream = new MemoryStream();
             TextWriter output = new StreamWriter(_outstream, _encoding);
             TextReader input = new StreamReader(_instream, _encoding);
 
-            _gtpClient = new GtpClient(input, output);
-        }
-
-        [Test]
-        public void TestGetVersion()
-        {
-            AnswerWith("= 44\n");
-
-            var actual = _gtpClient.GetProtocolVersion();
-            Assert.That(Output, Is.EqualTo("protocol_version\n\n"));
-            Assert.That(actual, Is.EqualTo(44));
-        }
-
-        [Test]
-        public void TestGetName()
-        {
-            AnswerWith("= mockengine\n\n");
-
-            var actual = _gtpClient.GetName();
-            Assert.That(Output, Is.EqualTo("name\n\n"));
-            Assert.That(actual, Is.EqualTo("mockengine"));
-        }
-
-        [Test]
-        public void TestGetVersion2()
-        {
-            AnswerWith("= 10.10.20\n\n");
-
-            var actual = _gtpClient.GetVersion();
-            Assert.That(Output, Is.EqualTo("version\n\n"));
-            Assert.That(actual, Is.EqualTo("10.10.20"));
+            return new GtpClient(input, output);
         }
 
         protected string Output
@@ -65,7 +31,7 @@ namespace NGTP.Specs
             }
         }
 
-        private void AnswerWith(string format)
+        protected void AnswerWith(string format)
         {
             var mock1 = new StreamWriter(_instream);
             var previous = mock1.BaseStream.Position;
