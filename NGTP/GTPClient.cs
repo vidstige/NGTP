@@ -37,6 +37,20 @@ namespace NGTP
             return response.AsString();
         }
 
+        public void SetBoardSize(int boardSize)
+        {
+            SendCommand(string.Format("boardsize {0}\n\n", boardSize));
+            var response = ReadResponse();
+            // verify
+        }
+        
+        public void ClearBoard()
+        {
+            SendCommand("clear_board\n\n");
+            var response = ReadResponse();
+            // verify
+        }
+
         private Response ReadResponse()
         {
             var line = string.Empty;

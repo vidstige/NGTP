@@ -18,7 +18,7 @@ namespace NGTP
             {
                 var firstSpaceIndex = line.IndexOf(" ", StringComparison.Ordinal);
 
-                if (firstSpaceIndex < 0) throw new NotImplementedException("abc");
+                if (firstSpaceIndex < 0) return new Response("");
 
                 var id = line.Substring(1, firstSpaceIndex);
                 var responseText = line.Substring(firstSpaceIndex + 1, line.Length - firstSpaceIndex - 1);
@@ -27,13 +27,12 @@ namespace NGTP
             }
             else if (first == '?')
             {
-
             }
             else
             {
 
             }
-            throw new ArgumentException();
+            throw new CommandException();
         }
 
         public int AsInt()

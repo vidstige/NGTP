@@ -45,6 +45,7 @@
     <Compile Include="AdminCommandsSpecs.cs" />
     <Compile Include="Given_GtpClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SetupCommandSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
