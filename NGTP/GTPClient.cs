@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 namespace NGTP
 {
@@ -14,7 +13,7 @@ namespace NGTP
             _output = output;
         }
 
-        public int GetVersion()
+        public int GetProtocolVersion()
         {
             SendCommand("protocol_version\n\n");
             var response = ReadResponse();
@@ -30,6 +29,14 @@ namespace NGTP
             return response.AsString();
         }
 
+        public string GetVersion()
+        {
+            SendCommand("version\n\n");
+            var response = ReadResponse();
+            // verify
+            return response.AsString();
+        }
+
         private Response ReadResponse()
         {
             var line = string.Empty;
@@ -38,52 +45,6 @@ namespace NGTP
 
             return Response.Parse(line);
         }
-
-        private class Response
-        {
-            private readonly string _responseText;
-
-            private Response(string responseText)
-            {
-                _responseText = responseText;
-            }
-
-            public static Response Parse(string line)
-            {
-                char first = line[0];
-                if (first == '=')
-                {
-                    var firstSpaceIndex = line.IndexOf(" ", StringComparison.Ordinal);
-
-                    if (firstSpaceIndex < 0) throw new NotImplementedException("abc");
-                    
-                    var id = line.Substring(1, firstSpaceIndex);
-                    var responseText = line.Substring(firstSpaceIndex + 1, line.Length - firstSpaceIndex - 1);
-                    return new Response(responseText);
-                    
-                }
-                else if (first == '?')
-                {
-                    
-                }
-                else
-                {
-                    
-                }
-                throw new ArgumentException();
-            }
-
-            public int AsInt()
-            {
-                return int.Parse(_responseText);
-            }
-
-            public string AsString()
-            {
-                return _responseText;
-            }
-        }
-
 
         private void SendCommand(string commandName)
         {

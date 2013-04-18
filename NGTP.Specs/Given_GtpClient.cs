@@ -28,7 +28,7 @@ namespace NGTP.Specs
         {
             AnswerWith("= 44\n");
 
-            var actual = _gtpClient.GetVersion();
+            var actual = _gtpClient.GetProtocolVersion();
             Assert.That(Output, Is.EqualTo("protocol_version\n\n"));
             Assert.That(actual, Is.EqualTo(44));
         }
@@ -41,6 +41,16 @@ namespace NGTP.Specs
             var actual = _gtpClient.GetName();
             Assert.That(Output, Is.EqualTo("name\n\n"));
             Assert.That(actual, Is.EqualTo("mockengine"));
+        }
+
+        [Test]
+        public void TestGetVersion2()
+        {
+            AnswerWith("= 10.10.20\n\n");
+
+            var actual = _gtpClient.GetVersion();
+            Assert.That(Output, Is.EqualTo("version\n\n"));
+            Assert.That(actual, Is.EqualTo("10.10.20"));
         }
 
         protected string Output
