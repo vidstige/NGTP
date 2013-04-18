@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Text;
 using NUnit.Framework;
 
 namespace NGTP.Specs
@@ -9,14 +10,15 @@ namespace NGTP.Specs
         private GtpClient _gtpClient;
         private MemoryStream _outstream;
         private MemoryStream _instream;
+        private readonly Encoding _encoding = Encoding.UTF8;
 
         [SetUp]
         public void SetUp()
         {
             _outstream = new MemoryStream();
             _instream = new MemoryStream();
-            TextWriter output = new StreamWriter(_outstream);
-            TextReader input = new StreamReader(_instream);
+            TextWriter output = new StreamWriter(_outstream, _encoding);
+            TextReader input = new StreamReader(_instream, _encoding);
 
             _gtpClient = new GtpClient(input, output);
         }
@@ -26,7 +28,31 @@ namespace NGTP.Specs
         {
             AnswerWith("= 44\n");
 
-            Assert.That(_gtpClient.GetVersion(), Is.EqualTo(44));
+            var actual = _gtpClient.GetVersion();
+            Assert.That(Output, Is.EqualTo("protocol_version\n\n"));
+            Assert.That(actual, Is.EqualTo(44));
+        }
+
+        [Test]
+        public void TestGetName()
+        {
+            AnswerWith("= mockengine\n\n");
+
+            var actual = _gtpClient.GetName();
+            Assert.That(Output, Is.EqualTo("name\n\n"));
+            Assert.That(actual, Is.EqualTo("mockengine"));
+        }
+
+        protected string Output
+        {
+            get
+            {
+                _outstream.Seek(0, SeekOrigin.Begin);
+                using (var reader = new StreamReader(_outstream))
+                {
+                    return reader.ReadToEnd();
+                }
+            }
         }
 
         private void AnswerWith(string format)
