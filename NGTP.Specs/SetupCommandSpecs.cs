@@ -33,6 +33,16 @@ namespace NGTP.Specs
         }
 
         [Test]
+        [ExpectedException(typeof(CommandException), ExpectedMessage = "")]
+        public void SetUnacceptableBoardSizeNoErrorMessage()
+        {
+            AnswerWith("?\n\n");
+
+            _gtpClient.SetBoardSize(1024);
+            Assert.That(Output, Is.EqualTo("boardsize 1024\n\n"));
+        }
+
+        [Test]
         public void ClearBoard()
         {
             AnswerWith("=\n\n");

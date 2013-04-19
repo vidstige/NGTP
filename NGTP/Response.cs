@@ -29,8 +29,7 @@ namespace NGTP
             {
                 var firstSpaceIndex = line.IndexOf(" ", StringComparison.Ordinal);
 
-                // TODO: add unit test for this
-                //if (firstSpaceIndex < 0) return throw new CommandException();
+                if (firstSpaceIndex < 0) throw new CommandException(string.Empty);
                 var id = line.Substring(1, firstSpaceIndex);
                 var errorText = line.Substring(firstSpaceIndex + 1, line.Length - firstSpaceIndex - 1);
                 throw new CommandException(errorText);
