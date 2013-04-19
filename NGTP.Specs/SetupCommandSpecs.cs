@@ -23,7 +23,7 @@ namespace NGTP.Specs
         }
 
         [Test]
-        [ExpectedException(typeof(CommandException))]
+        [ExpectedException(typeof(CommandException), ExpectedMessage = "unacceptable size")]
         public void SetUnacceptableBoardSize()
         {
             AnswerWith("? unacceptable size\n\n");

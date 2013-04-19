@@ -27,6 +27,13 @@ namespace NGTP
             }
             else if (first == '?')
             {
+                var firstSpaceIndex = line.IndexOf(" ", StringComparison.Ordinal);
+
+                // TODO: add unit test for this
+                //if (firstSpaceIndex < 0) return throw new CommandException();
+                var id = line.Substring(1, firstSpaceIndex);
+                var errorText = line.Substring(firstSpaceIndex + 1, line.Length - firstSpaceIndex - 1);
+                throw new CommandException(errorText);
             }
             else
             {
